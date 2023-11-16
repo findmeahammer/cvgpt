@@ -6,20 +6,66 @@
 
 <head>
     <title>{{ title }}</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <link rel="stylesheet" href="{% static 'main.css' %}">
+
+
+    <script>
+        $(document).ready(function() {
+            // Send the form on enter keypress and avoid if shift is pressed
+            $('#prompt').keypress(function(event) {
+                if (event.keyCode === 13 && !event.shiftKey) {
+                    event.preventDefault();
+                    $('form').submit();
+                }
+            });
+            $('form').on('submit', function(event) {
+                event.preventDefault();
+            // get the CSRF token from the cookie
+            var csrftoken = Cookies.get('csrftoken');
+            
+            // set the CSRF token in the AJAX headers
+            $.ajaxSetup({
+                headers: { 'X-CSRFToken': csrftoken }
+            });
+                // Get the prompt
+                var prompt = $('#prompt').val();
+                var dateTime = new Date();
+                var time = dateTime.toLocaleTimeString();
+                // Add the prompt to the response div
+                $('#response').append('<p>('+ time + ') <i class="bi bi-person"></i>: ' + prompt + '</p>');
+                // Clear the prompt
+                $('#prompt').val('');
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    data: {prompt: prompt},
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#response').append('<p>('+ time + ') <i class="bi bi-robot"></i>: ' + data.response + '</p>');
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
     <div class="App">
-        <header class="App-header">
-            <img src="{% static 'Octocat.png' %}" class="App-logo" alt="logo" />
-            <p>
-                GitHub Codespaces <span class="heart">♥️</span> Django
-            </p>
-            <p class="small">
-                Edit <code>hello_world/templates/index.html</code> and see changes live!
-            </p>
-        </header>
+        <header>cvGPT</header>
+       <div class="container border overflow-auto h-50" id="response"></div>
+        <div class="App-chat">
+            <form method="post">
+                {% csrf_token %}
+                <label for="prompt" class="form-label"><strong>Question: </strong></label>
+                <textarea class="form-control" type="textarea" id="prompt" name="prompt" rows="3"></textarea>
+                <br>
+                <button class="btn btn-primary" type="submit">Ask</button>
+            </form>
+fsf     
+        </div>        
+        
     </div>
 </body>
 
