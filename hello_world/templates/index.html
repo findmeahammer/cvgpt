@@ -8,8 +8,10 @@
     <title>{{ title }}</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
+    <link href="static/main.css" rel="stylesheet">
 
     <script>
         $(document).ready(function() {
@@ -51,22 +53,40 @@
     </script>
 </head>
 
-<body>
-    <div class="App">
-        <header>cvGPT</header>
-       <div class="container border overflow-auto h-50" id="response"></div>
-        <div class="App-chat">
+<body class="text-center">
+
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand">matt-gpt</h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="http://www.linkedin.com/in/Matt-Cresswell">http://www.linkedin.com/in/Matt-Cresswell</a>
+          </nav>
+        </div>
+      </header>
+
+      <main role="main" class="inner cover">
+        <p class="lead">
+            <div class="container border overflow-auto h-50" id="response"></div>
+        </p>
+        <p class="lead">
             <form method="post">
                 {% csrf_token %}
-                <label for="prompt" class="form-label"><strong>Question: </strong></label>
+                <label for="prompt" class="form-label"><strong>What would you like to know? </strong></label>
                 <textarea class="form-control" type="textarea" id="prompt" name="prompt" rows="3"></textarea>
                 <br>
                 <button class="btn btn-primary" type="submit">Ask</button>
             </form>
-fsf     
-        </div>        
-        
-    </div>
-</body>
+        </p>
+      </main>
 
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p>
+            Ask about my work experience of the technologies I've used.
+          </p>
+        </div>
+      </footer>
+    </div>
+  </body>
 </html>
